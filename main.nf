@@ -42,7 +42,7 @@ process get_teloreads {
 
     cat telomeres.ncrf\
     | grep -B 2 "^TTAGGG-"\
-    | grep -A 1 "mRatio=9[0-9]\|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \1 \2 /' \
+    | grep -A 1 -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \1 \2 /' \
     | awk '\$2 < 100{print \$1","\$1"_reverseTelomere"}'\
     >> allTelomeres.csv
     """
