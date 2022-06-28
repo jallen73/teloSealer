@@ -37,13 +37,13 @@ process get_teloreads {
     cat telomeres.ncrf\
     | grep -B 2 --no-group-sep "^${params.telomotif}+" \
     | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
-    | awk '\$2 - \$5 < 100{print \$1","\$1"_forwardTelomere"}'\
+    | awk '\$2 - \$5 < 100{print \$1","\$1"_fTelo"}'\
     > allTelomeres.csv
 
     cat telomeres.ncrf\
     | grep -B 2 --no-group-sep "^${params.telomotif}-"\
     | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
-    | awk '\$2 < 100{print \$1","\$1"_reverseTelomere"}'\
+    | awk '\$2 < 100{print \$1","\$1"_rTelo"}'\
     >> allTelomeres.csv
     """
 }
@@ -58,7 +58,7 @@ process map_to_graph {
         path "*gaf", emit: gaf
     """
     cat $fastq | sed -e 's/ .*//' > reads.fastq
-    GraphAligner ${params.GraphAligner_options} -f reads.fastq -g gfa -a readsVgraph.gaf
+    GraphAligner ${params.GraphAligner_options} -f reads.fastq -g $gfa -a readsVgraph.gaf
     cat $telomereCsv | while read csvrow ; do 
         rname=\$(echo \$csvrow | cut -c ',' -f 1) 
         nrname=\$(echo \$csvrow | cut -c ',' -f 2)
