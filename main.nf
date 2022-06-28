@@ -85,7 +85,7 @@ workflow {
     main:
         gfa = file(params.gfa)
         main_edges = getMainEdges(gfa)
-        Channel
+        me = Channel
     .fromPath('/some/path/*.txt')
     .splitText( by: 1 )
     .subscribe {
