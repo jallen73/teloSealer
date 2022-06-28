@@ -78,11 +78,11 @@ process seal {
     output:
         path "*.fasta", emit: contigFasta
     """
-    grep -P "fTelo.*\t>${edge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > templ.fq
+    grep -P "fTelo.*\\t>${edge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > templ.fq
     grep -P "rTelo.*[0-9]<${edge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> templ.fq
     spoa -r 0 templ.fq > ${edge}_left.fa
 
-    grep -P "rTelo.*\t<${edge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > tempr.fq
+    grep -P "rTelo.*\\t<${edge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > tempr.fq
     grep -P "fTelo.*[0-9]>${edge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> tempr.fq
     spoa -r 0 tempr.fq > ${edge}_right.fa
     
