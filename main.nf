@@ -85,8 +85,12 @@ workflow {
     main:
         gfa = file(params.gfa)
         main_edges = getMainEdges(gfa)
-        me = Channel
-            .fromPath(main_edges)
-            .splitText()
+        Channel
+    .fromPath('/some/path/*.txt')
+    .splitText( by: 1 )
+    .subscribe {
+        print it;
+        print "--- end of the chunk ---\n"
+    }
         println me
 }
