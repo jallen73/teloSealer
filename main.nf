@@ -100,4 +100,5 @@ workflow {
     .fromPath('/some/path/*.txt')
     .splitText()
         teloreads = get_teloreads(fastq)
+        gaf = map_to_graph(gfa,fastq,teloreads)
 }
