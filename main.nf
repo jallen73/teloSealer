@@ -85,4 +85,8 @@ workflow {
     main:
         gfa = file(params.gfa)
         main_edges = getMainEdges(gfa)
+        me = Channel
+            .fromPath(main_edges)
+            .splitText()
+        println me
 }
