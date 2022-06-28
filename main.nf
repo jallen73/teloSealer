@@ -84,15 +84,23 @@ echo \$bashedge
 grep -P "fTelo.*\\t>\${bashedge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > templ.fq
 echo "onedown"
 grep -P "rTelo.*[0-9]<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rp >> templ.fq
-#spoa -r 0 templ.fq > \${bashedge}_left.fa
+if [[ $(cat temp?.fq | wc -l) -gt 2 ]] ; then
+    spoa -r 0 templ.fq > \${bashedge}_left.fa
+else
+    touch \${bashedge}_left.fa
+fi
 
 grep -P "rTelo.*\\t<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > tempr.fq
 grep -P "fTelo.*[0-9]>\${bashedge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rp >> tempr.fq
-#spoa -r 0 tempr.fq > \${bashedge}_right.fa
+if [[ $(cat temp?.fq | wc -l) -gt 2 ]] ; then
+    spoa -r 0 tempr.fq > \${bashedge}_right.fa
+else
+    touch \${bashedge}_right.fa
+fi
 
-#awk '/^S/ && \$2 == \${bashedge}{print ">" \$2 "\\n" \$3}' > middle.fa 
-#minimap2 -cx asm5 middle.fa \${bashedge}_left.fa \${bashedge}_right.fa | sort -k10,10nr | awk '!a[\$1]++' > endsVmiddle.paf
-#python $workflow.projectDir/nfdir//scripts/merge_edges.py --edges middle.fa \${bashedge}_left.fa \${bashedge}_right.fa --paf endsVmiddle.paf
+awk '/^S/ && \$2 == \${bashedge}{print ">" \$2 "\\n" \$3}' > middle.fa 
+minimap2 -cx asm5 middle.fa \${bashedge}_left.fa \${bashedge}_right.fa | sort -k10,10nr | awk '!a[\$1]++' > endsVmiddle.paf
+python $workflow.projectDir/nfdir//scripts/merge_edges.py --edges middle.fa \${bashedge}_left.fa \${bashedge}_right.fa --paf endsVmiddle.paf > consensus.fasta
     """
 }
 
