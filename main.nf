@@ -92,5 +92,4 @@ workflow {
         print it;
         print "--- end of the chunk ---\n"
     }
-        println me
 }
