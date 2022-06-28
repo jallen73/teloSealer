@@ -5,9 +5,7 @@ nextflow.enable.dsl = 2
 // Telosealer pipeline to correctly finish T2T contigs from a flye assembly path for species with short telomeres
 
 println "Project : $workflow.projectDir"
-println "Git info: $workflow.repository - $workflow.revision [$workflow.commitId]"
-println "Cmd line: $workflow.commandLine"
-println "Manifest's pipeline version: $workflow.manifest.version"
+
 
 // Workflow processes
 
@@ -79,12 +77,12 @@ process seal {
     
     awk '/^S/ && \$2 == ${edge}{print ">" \$2 "\n" \$3}' > middle.fa 
     minimap2 -cx asm5 middle.fa ${edge}_left.fa ${edge}_right.fa | sort -k10,10nr | awk '!a[\$1]++' > endsVmiddle.paf
-    python //nfdir//scripts/merge_edges.py --edges middle.fa ${edge}_left.fa ${edge}_right.fa --paf endsVmiddle.paf
+    python $workflow.projectDir/nfdir//scripts/merge_edges.py --edges middle.fa ${edge}_left.fa ${edge}_right.fa --paf endsVmiddle.paf
     """
 }
 
 workflow {
     main:
-        gfa = file($params.gfa)
+        gfa = file(params.gfa)
         main_edges = getMainEdges(gfa)
 }
