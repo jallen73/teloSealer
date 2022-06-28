@@ -78,21 +78,21 @@ process seal {
     output:
         path "*.fasta", emit: contigFasta
     """
-    echo "${edge}" | head -n 1 > temp.txt
-    bashedge=\$(head -n 1 temp.txt)
-    echo \$bashedge
-    grep -P "fTelo.*\\t>\${bashedge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > templ.fq
-    echo "onedown"
-    grep -P "rTelo.*[0-9]<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> templ.fq
-    #spoa -r 0 templ.fq > \${bashedge}_left.fa
+echo "${edge}" | head -n 1 > temp.txt
+bashedge=\$(head -n 1 temp.txt)
+echo \$bashedge
+grep -P "fTelo.*\\t>\${bashedge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > templ.fq
+echo "onedown"
+grep -P "rTelo.*[0-9]<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> templ.fq
+#spoa -r 0 templ.fq > \${bashedge}_left.fa
 
-    grep -P "rTelo.*\\t<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > tempr.fq
-    grep -P "fTelo.*[0-9]>\${bashedge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> tempr.fq
-    #spoa -r 0 tempr.fq > \${bashedge}_right.fa
-    
-    #awk '/^S/ && \$2 == \${bashedge}{print ">" \$2 "\\n" \$3}' > middle.fa 
-    #minimap2 -cx asm5 middle.fa \${bashedge}_left.fa \${bashedge}_right.fa | sort -k10,10nr | awk '!a[\$1]++' > endsVmiddle.paf
-    #python $workflow.projectDir/nfdir//scripts/merge_edges.py --edges middle.fa \${bashedge}_left.fa \${bashedge}_right.fa --paf endsVmiddle.paf
+grep -P "rTelo.*\\t<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > tempr.fq
+grep -P "fTelo.*[0-9]>\${bashedge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> tempr.fq
+#spoa -r 0 tempr.fq > \${bashedge}_right.fa
+
+#awk '/^S/ && \$2 == \${bashedge}{print ">" \$2 "\\n" \$3}' > middle.fa 
+#minimap2 -cx asm5 middle.fa \${bashedge}_left.fa \${bashedge}_right.fa | sort -k10,10nr | awk '!a[\$1]++' > endsVmiddle.paf
+#python $workflow.projectDir/nfdir//scripts/merge_edges.py --edges middle.fa \${bashedge}_left.fa \${bashedge}_right.fa --paf endsVmiddle.paf
     """
 }
 
