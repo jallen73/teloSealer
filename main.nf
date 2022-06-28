@@ -98,7 +98,7 @@ workflow {
         fastq = file(params.fastq)
         main_edges = getMainEdges(gfa)
         main_edge_array = Channel
-            .fromPath('/some/path/*.txt')
+            .fromPath(main_edges)
             .splitText()
         teloreads = get_teloreads(fastq)
         gaf = map_to_graph(gfa,fastq,teloreads)
