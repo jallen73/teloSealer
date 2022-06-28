@@ -33,20 +33,9 @@ process get_teloreads {
     
     """
     seqkit fq2fa $fastq | NCRF ${params.telomotif} --minlength=${params.minMotifLength} --stats=events > telomeres.ncrf
-    
-    cat telomeres.ncrf\
-    | grep -B 2 "^TTAGGG+" \
-    | grep -A 1 "mRatio=9[0-9]\|mRatio=100" | grep -v "^#" | sed 's/ \([0-9]*\)-\([0-9]*\) / \1 \2 /' \
-    | awk '\$2 - \$5 < 100{print $1","$1"_forwardTelomere"}'\
-    > allTelomeres.csv
-
-    cat telomeres.ncrf\
-    | grep -B 2 "^TTAGGG-"\
-    | grep -A 1 "mRatio=9[0-9]\|mRatio=100" | grep -v "^#" | sed 's/ \([0-9]*\)-\([0-9]*\) / \1 \2 /' \
-    | awk '\$2 < 100{print $1","$1"_reverseTelomere"}'\
-    >> allTelomeres.csv
     """
-}
+}    
+
 
 process map_to_graph {
     label "telosealer"
