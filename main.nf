@@ -7,7 +7,7 @@ nextflow.enable.dsl = 2
 
 // Workflow processes
 
-process get_main_edges {
+process getMainEdges {
     label "telosealer"
     cpus 1
     input:
@@ -80,5 +80,5 @@ process seal {
 workflow {
     main:
         gfa = file($params.gfa)
-        main_edges = get_main_edges(gfa)
+        main_edges = getMainEdges(gfa)
 }
