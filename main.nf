@@ -78,7 +78,7 @@ process seal {
     output:
         path "*.fasta", emit: contigFasta
     """
-    bashedge=$(echo "${edge}" | head -n 1)
+    bashedge=\$(echo "${edge}" | head -n 1)
     grep -P "fTelo.*\\t>\${bashedge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > templ.fq
     grep -P "rTelo.*[0-9]<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> templ.fq
     spoa -r 0 templ.fq > \${bashedge}_left.fa
