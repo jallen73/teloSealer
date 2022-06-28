@@ -88,4 +88,5 @@ workflow {
         me = Channel
     .fromPath('/some/path/*.txt')
     .splitText()
+        teloreads = get_teloreads(params.fastq)
 }
