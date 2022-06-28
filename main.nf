@@ -35,13 +35,13 @@ process get_teloreads {
     seqkit fq2fa $fastq | NCRF ${params.telomotif} --minlength=${params.minMotifLength} --stats=events > telomeres.ncrf
 
     cat telomeres.ncrf\
-    | grep -B 2 --no-group-sep "^TTAGGG+" \
+    | grep -B 2 --no-group-sep "^${params.telomotif}+" \
     | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
     | awk '\$2 - \$5 < 100{print \$1","\$1"_forwardTelomere"}'\
     > allTelomeres.csv
 
     cat telomeres.ncrf\
-    | grep -B 2 --no-group-sep "^TTAGGG-"\
+    | grep -B 2 --no-group-sep "^${params.telomotif}-"\
     | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
     | awk '\$2 < 100{print \$1","\$1"_reverseTelomere"}'\
     >> allTelomeres.csv
