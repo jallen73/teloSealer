@@ -50,6 +50,7 @@ process get_teloreads {
 
 process map_to_graph {
     label "telosealer"
+    cpus 16
     input:
         file gfa
         file fastq
@@ -58,10 +59,10 @@ process map_to_graph {
         path "*gaf", emit: gaf
     """
     cat $fastq | sed -e 's/ .*//' > reads.fastq
-    GraphAligner ${params.GraphAligner_options} -f reads.fastq -g $gfa -a readsVgraph.gaf
+    GraphAligner ${params.GraphAligner_options} -f reads.fastq -g $gfa -a readsVgraph.gaf -t 16
     cat $telomereCsv | while read csvrow ; do 
-        rname=\$(echo \$csvrow | cut -c ',' -f 1) 
-        nrname=\$(echo \$csvrow | cut -c ',' -f 2)
+        rname=\$(echo \$csvrow | cut -d ',' -f 1) 
+        nrname=\$(echo \$csvrow | cut -d ',' -f 2)
         sed -i -e "s/\$rname\t/\$nrname\t/" readsVgraph.gaf
         done
     """
