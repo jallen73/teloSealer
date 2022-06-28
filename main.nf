@@ -78,12 +78,12 @@ process seal {
     output:
         path "*.fasta", emit: contigFasta
     """
-    grep -P "fTelo.*\t>${edge}" $gaf | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > templ.fq
-    grep -P "rTelo.*[0-9]<${edge}" $gaf | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> templ.fq
+    grep -P "fTelo.*\t>${edge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > templ.fq
+    grep -P "rTelo.*[0-9]<${edge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> templ.fq
     spoa -r 0 templ.fq > ${edge}_left.fa
 
-    grep -P "rTelo.*\t<${edge}" $gaf | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > tempr.fq
-    grep -P "fTelo.*[0-9]>${edge}" $gaf | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> tempr.fq
+    grep -P "rTelo.*\t<${edge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > tempr.fq
+    grep -P "fTelo.*[0-9]>${edge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rc >> tempr.fq
     spoa -r 0 tempr.fq > ${edge}_right.fa
     
     awk '/^S/ && \$2 == ${edge}{print ">" \$2 "\n" \$3}' > middle.fa 
@@ -98,8 +98,9 @@ workflow {
         fastq = file(params.fastq)
         main_edges = getMainEdges(gfa)
         main_edge_array = Channel
-    .fromPath('/some/path/*.txt')
-    .splitText()
+            .fromPath('/some/path/*.txt')
+            .splitText()
         teloreads = get_teloreads(fastq)
         gaf = map_to_graph(gfa,fastq,teloreads)
+        sealedContigs = seal(gaf,fastq,gfa,main_edge_array)
 }
