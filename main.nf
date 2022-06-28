@@ -8,7 +8,8 @@ nextflow.enable.dsl = 2
 // Workflow processes
 
 process get_main_edges {
-    label = "telosealer"
+    label "telosealer"
+    cpus 1
     input:
         file gfa
     output:
@@ -20,7 +21,7 @@ process get_main_edges {
 }
 
 process get_teloreads {
-    label = "telosealer"
+    label "telosealer"
     input:
         file fastq
     output:
@@ -34,7 +35,7 @@ process get_teloreads {
 }
 
 process map_to_graph {
-    label = "telosealer"
+    label "telosealer"
     input:
         file gfa
         file fastq
@@ -53,7 +54,7 @@ process map_to_graph {
 }
 
 process seal {
-    label = 'telosealer'
+    label 'telosealer'
     input:
         file gaf
         file fastq
