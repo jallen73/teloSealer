@@ -36,13 +36,13 @@ process get_teloreads {
 
     cat telomeres.ncrf\
     | grep -B 2 --no-group-sep "^TTAGGG+" \
-    | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \1 \2 /' \
+    | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
     | awk '\$2 - \$5 < 100{print \$1","\$1"_forwardTelomere"}'\
     > allTelomeres.csv
 
     cat telomeres.ncrf\
-    | grep -B 2 "^TTAGGG-"\
-    | grep -A 1 -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \1 \2 /' \
+    | grep -B 2 --no-group-sep "^TTAGGG-"\
+    | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
     | awk '\$2 < 100{print \$1","\$1"_reverseTelomere"}'\
     >> allTelomeres.csv
     """
