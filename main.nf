@@ -78,6 +78,7 @@ process seal {
 }
 
 workflow {
-    gfa = file($params.gfa)
-    main_edges = get_main_edges(gfa)
+    main:
+        gfa = file($params.gfa)
+        main_edges = get_main_edges(gfa)
 }
