@@ -84,9 +84,10 @@ process seal {
 workflow {
     main:
         gfa = file(params.gfa)
+        fastq = file(params.fastq)
         main_edges = getMainEdges(gfa)
         me = Channel
     .fromPath('/some/path/*.txt')
     .splitText()
-        teloreads = get_teloreads(params.fastq)
+        teloreads = get_teloreads(fastq)
 }
