@@ -32,7 +32,7 @@ process get_teloreads {
         path "allTelomeres.csv", emit: telomereCsv
     
     """
-    seqkit fq2fa $fastq | NCRF ${params.telomotif} --minlength=${params.minlength} --stats=events > telomeres.ncrf
+    seqkit fq2fa $fastq | NCRF ${params.telomotif} --minlength=${params.minMotifLength} --stats=events > telomeres.ncrf
     cat telomeres.ncrf | //awk madness//  > allTelomeres.csv
     cat telomeres.ncrf | //awk madness// >> allTelomeres.csv
     """
