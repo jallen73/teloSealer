@@ -21,6 +21,7 @@ def main():
         with open(fasta) as f:
             for line in f:
                 if line[0] == ">":
+                    print('processing seq' + line.strip()[1:])
                     if workingseq:
                         seqdict[workingseq] = "".join(seq)
                     workingseq = line.strip()[1:]
