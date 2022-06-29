@@ -92,7 +92,7 @@ fi
 
 grep -P "rTelo.*\\t<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$2 - \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq > tempr.fq
 grep -P "fTelo.*[0-9]>\${bashedge}" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rp >> tempr.fq
-if [[ $(cat temp?.fq | wc -l) -gt 2 ]] ; then
+if [[ \$(cat temp?.fq | wc -l) -gt 2 ]] ; then
     spoa -r 0 tempr.fq > \${bashedge}_right.fa
 else
     touch \${bashedge}_right.fa
