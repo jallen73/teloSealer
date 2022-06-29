@@ -17,7 +17,7 @@ def main():
     seqdict = {}
     for fasta in args.fastas:
         workingseq = None
-        seq = None
+        seq = []
         with open(fasta) as f:
             for line in f:
                 if line[0] == ">":
