@@ -16,6 +16,7 @@ def main():
     
     seqdict = {}
     for fasta in args.fastas:
+        print('processing fasta file ' + fasta)
         workingseq = None
         seq = []
         with open(fasta) as f:
