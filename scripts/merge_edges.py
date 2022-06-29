@@ -26,7 +26,7 @@ def main():
                     workingseq = line.strip()[1:]
                     seq = []
                 else:
-                    seq.append(line.strip)
+                    seq.append(line.strip())
         seqdict[workingseq] = "".join(seq)
     outseq = []
     matches = []
