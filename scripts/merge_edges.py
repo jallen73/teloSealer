@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import sys
 
 def revcomp(x:str) -> str:
     tr = str.maketrans('ATGC','TACG')
@@ -16,13 +17,13 @@ def main():
     
     seqdict = {}
     for fasta in args.fastas:
-        print('processing fasta file ' + fasta)
+        print('processing fasta file ' + fasta, file = sys.stderr)
         workingseq = None
         seq = []
         with open(fasta) as f:
             for line in f:
                 if line[0] == ">":
-                    print('processing seq ' + line.split()[1:])
+                    print('processing seq ' + line.split()[1:], file = sys.stderr)
                     if workingseq:
                         seqdict[workingseq] = "".join(seq)
                     workingseq = line.split()[1:]
