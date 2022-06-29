@@ -23,10 +23,10 @@ def main():
         with open(fasta) as f:
             for line in f:
                 if line[0] == ">":
-                    print('processing seq ' + line.split()[1:], file = sys.stderr)
+                    print('processing seq ' + line.split()[0][1:], file = sys.stderr)
                     if workingseq:
                         seqdict[workingseq] = "".join(seq)
-                    workingseq = line.split()[1:]
+                    workingseq = line.split()[0][1:]
                     seq = []
                 else:
                     seq.append(line.strip())
