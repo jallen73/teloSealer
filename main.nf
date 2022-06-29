@@ -100,7 +100,7 @@ fi
 
 awk '/^S/ && \$2 == \${bashedge}{print ">" \$2 "\\n" \$3}' > middle.fa 
 minimap2 -cx asm5 middle.fa \${bashedge}_left.fa \${bashedge}_right.fa | sort -k10,10nr | awk '!a[\$1]++' > endsVmiddle.paf
-python $workflow.projectDir/nfdir//scripts/merge_edges.py --edges middle.fa \${bashedge}_left.fa \${bashedge}_right.fa --paf endsVmiddle.paf > consensus.fasta
+python $workflow.projectDir/scripts/merge_edges.py --edges middle.fa \${bashedge}_left.fa \${bashedge}_right.fa --paf endsVmiddle.paf > consensus.fasta
     """
 }
 
