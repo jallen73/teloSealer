@@ -33,7 +33,7 @@ def main():
     with open(args.paf) as f:
         for line in f:
             fields = line.strip().split('\t')
-            matches.append([fields[5],fields[7],fields[8],fields[6],fields[0],fields[2],fields[3],fields[4]])
+            matches.append([int(fields[5]),int(fields[7]),int(fields[8]),int(fields[6]),fields[0],int(fields[2]),int(fields[3]),fields[4]])
     matches.sort()
     centralseq = seqdict[matches[0][0]]
     ltrim = 0
