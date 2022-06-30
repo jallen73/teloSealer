@@ -81,13 +81,13 @@ process seal {
 echo "${edge}" | head -n 1 > temp.txt
 bashedge=\$(head -n 1 temp.txt)
 echo \$bashedge
-grep -P "fTelo.*\\t<\${bashedge}[<>]" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rpvt dna > templ.fq
+grep -P "fTelo.*\\t<\${bashedge}[<>]" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rpvt dna > templ.fq || echo 'yo'
 echo 1
-grep -P "fTelo.*\\t<\${bashedge}\\t" $gaf | awk '\$3 < 100 &&  \$4 > 1000 && \$8 < 10000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq| seqkit seq -rpvt dna >> templ.fq
+grep -P "fTelo.*\\t<\${bashedge}\\t" $gaf | awk '\$3 < 100 &&  \$4 > 1000 && \$8 < 10000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq| seqkit seq -rpvt dna >> templ.fq || echo 'yo'
 echo 2
-grep -P "rTelo.*[0-9][>]\${bashedge}" $gaf | awk '\$2 - \$4 < 100 && \$4 - \$3 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq >> templ.fq
+grep -P "rTelo.*[0-9]>\${bashedge}" $gaf | awk '\$2 - \$4 < 100 && \$4 - \$3 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq >> templ.fq || echo 'yo'
 echo 3
-grep -P "rTelo.*\\t>\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$4 - \$3 > 1000 && \$8 < 10000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq >> templ.fq
+grep -P "rTelo.*\\t>\${bashedge}" $gaf | awk '\$2 - \$4 < 100 &&  \$4 - \$3 > 1000 && \$8 < 10000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq >> templ.fq || echo 'yo'
 echo 4
 if [[ \$(cat templ.fq | wc -l) -gt 0 ]] ; then
     spoa -r 0 templ.fq | sed -e 's/>/>left/' > \${bashedge}_left.fa
@@ -95,11 +95,11 @@ else
     touch \${bashedge}_left.fa
 fi
 echo 5
-grep -P "rTelo.*\\t<\${bashedge}\\t" $gaf | awk '\$2 - \$4 < 100 &&  \$4 - \$3 > 1000 && \$7 - \$9 < 10000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rpvt dna > tempr.fq
-grep -P "rTelo.*[0-9]<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 && \$4 - \$3 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rpvt dna > tempr.fq
+grep -P "rTelo.*\\t<\${bashedge}\\t" $gaf | awk '\$2 - \$4 < 100 &&  \$4 - \$3 > 1000 && \$7 - \$9 < 10000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rpvt dna > tempr.fq || echo 'yo'
+grep -P "rTelo.*[0-9]<\${bashedge}" $gaf | awk '\$2 - \$4 < 100 && \$4 - \$3 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rpvt dna > tempr.fq || echo 'yo'
 
-grep -P "fTelo.*\\t>\${bashedge}[<>]" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq >> tempr.fq
-grep -P "fTelo.*\\t>\${bashedge}\\t" $gaf | awk '\$3 < 100 &&  \$4 > 1000 && \$7 - \$9 < 10000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq >> tempr.fq
+grep -P "fTelo.*\\t>\${bashedge}[<>]" $gaf | awk '\$3 < 100 &&  \$4 > 1000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq >> tempr.fq || echo 'yo'
+grep -P "fTelo.*\\t>\${bashedge}\\t" $gaf | awk '\$3 < 100 &&  \$4 > 1000 && \$7 - \$9 < 10000' | cut -d '_' -f 1 | fgrep -f - -A 3 --no-group-sep $fastq >> tempr.fq || echo 'yo'
 
 if [[ \$(cat tempr.fq | wc -l) -gt 0 ]] ; then
     spoa -r 0 tempr.fq | sed -e 's/>/>right/' > \${bashedge}_right.fa
