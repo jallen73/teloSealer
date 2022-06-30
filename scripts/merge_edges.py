@@ -39,7 +39,7 @@ def main():
             seqdict[workingseq] = "".join(seq)
     outseq = []
     matches = []
-    matchdf = pandas.read_csv(args.paf,usecols=list(range(10)))
+    matchdf = pandas.read_csv(args.paf,usecols=list(range(10)),header = None, sep = '\t')
     matchdf.columns = ['qid','qlen','qstart','qend','strand','sid','slen','sstart','send','matches','alen']
     lmatch = matchdf.query('qid == "' + seqnames['left'] + '"').sort_values('sstart')
     rmatch = matchdf.query('qid == "' + seqnames['right'] + '"').sort_values('send')
