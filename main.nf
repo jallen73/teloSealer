@@ -117,6 +117,16 @@ fi
     """
 }
 
+process cat_output {
+    label "telosealer"
+    input:
+        file contigs
+    """
+    mkdir $params.outdir
+    cat $contigs > $params.outdir/sealed_contigs.fasta
+    """
+}
+
 workflow {
     main:
         gfa = file(params.gfa)
