@@ -117,14 +117,34 @@ fi
     """
 }
 
-process cat_output {
+process cat_contigs {
     label "telosealer"
     input:
         file contigs
+    output:
+        'sealed_contigs.fasta'
     """
     mkdir $params.outdir
-    cat $contigs > $params.outdir/sealed_contigs.fasta
+    cat $contigs > sealed_contigs.fasta
     """
+}
+
+process output {
+  label "TeloID"
+  cpus 1
+
+  publishDir "${params.outdir}", mode: 'copy', pattern: "*"
+
+  input:
+    file fname
+
+  output:
+    file fname
+
+  """
+  echo 'Writing output files'
+  """
+
 }
 
 workflow {
@@ -137,5 +157,6 @@ workflow {
         teloreads = get_teloreads(fastq)
         gaf = map_to_graph(gfa,fastq,teloreads)
         sealedContigs = seal(gaf,fastq,gfa,main_edge_array) | collectFile
-        cat_output(sealedContigs)
+        cat_contigs(sealedContigs)
+        output(cat_contigs)
 }
