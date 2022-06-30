@@ -41,11 +41,22 @@ def main():
     matches = []
     matchdf = pandas.read_csv(args.paf,usecols=list(range(11)),header = None, sep = '\t')
     matchdf.columns = ['qid','qlen','qstart','qend','strand','sid','slen','sstart','send','matches','alen']
-    lmatch = matchdf.query('qid == "' + seqnames['left'] + '"').sort_values('sstart')
-    rmatch = matchdf.query('qid == "' + seqnames['right'] + '"').sort_values('send')
-    lseq = seqdict[seqnames['left']][:list(lmatch['qstart'])[0]]
-    mseq = seqdict[seqnames['middle']][list(lmatch['sstart'])[0]:list(rmatch['send'])[-1]]
-    rseq = seqdict[seqnames['right']][list(rmatch['qend'])[-1]:]
+    if seqnames['left']:
+        lmatch = matchdf.query('qid == "' + seqnames['left'] + '"').sort_values('sstart')
+        lseq = seqdict[seqnames['left']][:list(lmatch['qstart'])[0]]
+        mstart = list(lmatch['sstart'])[0]
+    else:
+        mstart = None
+        lseq = ""
+    if seqnames['right']:
+        rmatch = matchdf.query('qid == "' + seqnames['right'] + '"').sort_values('send')
+        rseq = seqdict[seqnames['right']][list(rmatch['qend'])[-1]:]
+        mend = list(rmatch['send'])[-1]
+    else:
+        mend = None
+        rseq = ""
+    mseq = seqdict[seqnames['middle']][mstart:mend]
+   
 
     print('>merged_' + seqnames['middle'] + '\n' + lseq + mseq + rseq)
 
