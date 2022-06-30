@@ -41,8 +41,8 @@ def main():
     matches = []
     matchdf = pandas.read_csv(args.paf,usecols=list(range(10)))
     matchdf.columns = ['qid','qlen','qstart','qend','strand','sid','slen','sstart','send','matches','alen']
-    lmatch = matchdf.query(f'qid == "{seqnames['left']}"').sort_values('sstart')
-    rmatch = matchdf.query(f'qid == "{seqnames['right']}"').sort_values('send')
+    lmatch = matchdf.query('qid == "' + seqnames['left'] + '"').sort_values('sstart')
+    rmatch = matchdf.query('qid == "' + seqnames['right'] + '"').sort_values('send')
     lseq = seqdict[seqnames['left']][:list(lmatch['qstart'])[0]]
     mseq = seqdict[seqnames['middle']][list(lmatch['sstart'])[0]:list(rmatch['send'])[-1]]
     rseq = seqdict[seqnames['right']][list(rmatch['qend'])[-1]:]
