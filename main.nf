@@ -105,7 +105,7 @@ else
     touch \${bashedge}_right.fa
 fi
 
-grep -P "S\t${bashedge}\t" $gfa | awk '{print ">" \$2"\n" \$3}' > middle.fa
+grep -P "S\t\${bashedge}\t" $gfa | awk '{print ">" \$2"\n" \$3}' > middle.fa
 minimap2 -cx asm5 middle.fa \${bashedge}_left.fa \${bashedge}_right.fa | sort -k10,10nr | awk '!a[\$1]++' > endsVmiddle.paf
 python $workflow.projectDir/scripts/merge_edges.py --middle middle.fa --left \${bashedge}_left.fa --right \${bashedge}_right.fa --paf endsVmiddle.paf > consensus.fasta
     """
