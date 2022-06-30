@@ -157,6 +157,6 @@ workflow {
         teloreads = get_teloreads(fastq)
         gaf = map_to_graph(gfa,fastq,teloreads)
         sealedContigs = seal(gaf,fastq,gfa,main_edge_array) | collectFile
-        cat_contigs(sealedContigs)
-        output(cat_contigs)
+        final_tigs = cat_contigs(sealedContigs)
+        output(final_tigs)
 }
