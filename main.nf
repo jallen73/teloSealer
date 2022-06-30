@@ -136,6 +136,6 @@ workflow {
             .splitText()
         teloreads = get_teloreads(fastq)
         gaf = map_to_graph(gfa,fastq,teloreads)
-        sealedContigs = seal(gaf,fastq,gfa,main_edge_array)
-        cat_output(sealedContigs.collect)
+        sealedContigs = seal(gaf,fastq,gfa,main_edge_array) | collectFile
+        cat_output(sealedContigs)
 }
