@@ -122,7 +122,7 @@ process cat_contigs {
     input:
         file contigs
     output:
-        'sealed_contigs.fasta'
+        path 'sealed_contigs.fasta', emit: tigs
     """
     mkdir $params.outdir
     cat $contigs > sealed_contigs.fasta
