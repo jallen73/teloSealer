@@ -96,10 +96,10 @@ else
 fi
 
 #getting right telomeric reads
-grep -P "rTelo.*<\${bashedge}\\t" $gaf       | awk '\$2 - \$4 < 100 && \$4 - \$3 > 1000' | awk '\$8 < 5000'    | cut -d '_' -f 1\
+grep -P "rTelo.*<\${bashedge}\\t" $gaf        | awk '\$2 - \$4 < 100 && \$4 - \$3 > 1000' | awk '\$8 < 5000'    | cut -d '_' -f 1\
  | fgrep -f - -A 3 --no-group-sep $fastq | seqkit seq -rpvt dna > tempr.fq || echo 'yo'
 
-grep -P "fTelo.*\\t>\${bashedge}[<>\\t] $gaf | awk '\$3 < 100       && \$4 - \$3 > 1000' | awk '\$7 - \$9 < 5000' | cut -d '_' -f 1\
+grep -P "fTelo.*\\t>\${bashedge}[<>\\t]" $gaf | awk '\$3 < 100       && \$4 - \$3 > 1000' | awk '\$7 - \$9 < 5000' | cut -d '_' -f 1\
  | fgrep -f - -A 3 --no-group-sep $fastq >> tempr.fq
 
 if [[ \$(cat tempr.fq | wc -l) -gt 0 ]] ; then
